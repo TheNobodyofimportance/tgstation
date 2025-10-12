@@ -5,15 +5,15 @@
 /datum/element/bane
 	element_flags = ELEMENT_BESPOKE
 	argument_hash_start_idx = 2
-	/// can be a mob or a species.
+	/// Can be a mob or a species.
 	var/target_type
-	/// multiplier of the extra damage based on the force of the item.
+	/// Multiplier of the extra damage based on the force of the item.
 	var/damage_multiplier
 	/// Added after the above.
 	var/added_damage
 	/// If it requires combat mode on to deal the extra damage or not.
 	var/requires_combat_mode
-	/// if we want it to only affect a certain mob biotype
+	/// If we want it to only affect a certain mob biotype.
 	var/mob_biotypes
 	/// if we want it to only affect mobs with certain traits.
 	var/mob_traits
@@ -76,7 +76,7 @@
 	SEND_SIGNAL(element_owner, COMSIG_OBJECT_ON_BANING, baned_target)
 
 /**
- * Checks typepaths and the mob's biotype, returning TRUE if correct and FALSE if wrong.
+ * Checks typepaths and the mob's biotype as well as its traits, returning TRUE if correct and FALSE if wrong.
  * Additionally checks if combat mode is required, and if so whether it's enabled or not.
  */
 /datum/element/bane/proc/check_biotype_path(atom/bane_applier, atom/target)
