@@ -11,12 +11,14 @@
 	var/damage_multiplier
 	/// Added after the above.
 	var/added_damage
+	/// If it requires combat mode on to deal the extra damage or not.
+	var/requires_combat_mode
 	/// If we want it to only affect a certain mob biotype.
 	var/mob_biotypes
 	/// if we want it to only affect mobs with certain traits.
 	var/mob_traits
 
-/datum/element/bane/Attach(datum/target, target_type = /mob/living, mob_biotypes = NONE, mob_traits = NONE, damage_multiplier=1, added_damage = 0)
+/datum/element/bane/Attach(datum/target, target_type = /mob/living, mob_biotypes = NONE, mob_traits = NONE, damage_multiplier=1, added_damage = 0, requires_combat_mode = TRUE)
 	. = ..()
 
 	if(!ispath(target_type, /mob/living) && !ispath(target_type, /datum/species))
@@ -25,6 +27,7 @@
 	src.target_type = target_type
 	src.damage_multiplier = damage_multiplier
 	src.added_damage = added_damage
+	src.requires_combat_mode = requires_combat_mode
 	src.mob_biotypes = mob_biotypes
 	src.mob_traits = mob_traits
 	target.AddElementTrait(TRAIT_ON_HIT_EFFECT, REF(src), /datum/element/on_hit_effect)
@@ -73,7 +76,8 @@
 	SEND_SIGNAL(element_owner, COMSIG_OBJECT_ON_BANING, baned_target)
 
 /**
- * Checks typepaths and the mob's biotype as well as its traits, returning TRUE if correct and FALSE if wrong.
+ * Checks typepaths and the mob's biotype, as well as its traits, returning TRUE if correct and FALSE if wrong.
+ * Additionally checks if combat mode is required, and if so whether it's enabled or not.
  */
 /datum/element/bane/proc/check_biotype_path(atom/bane_applier, atom/target)
 	if(!isliving(target))
@@ -81,6 +85,8 @@
 	var/mob/living/living_target = target
 	if(isliving(bane_applier) && bane_applier)
 		var/mob/living/living_bane_applier = bane_applier
+		if(requires_combat_mode && !living_bane_applier.combat_mode)
+			return FALSE
 	var/is_correct_biotype = living_target.mob_biotypes & mob_biotypes
 	if(mob_biotypes && !(is_correct_biotype))
 		return FALSE

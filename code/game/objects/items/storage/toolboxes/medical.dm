@@ -41,4 +41,4 @@
 
 /obj/item/storage/toolbox/medical/coroner/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/bane, mob_biotypes = MOB_UNDEAD, damage_multiplier = 1) //Just in case one of the tennants get uppity
+	AddElement(/datum/element/bane, mob_traits = TRAIT_CLUMSY, damage_multiplier = 1, requires_combat_mode = FALSE) //Just in case one of the tennants get uppity (if this says mob_traits = TRAIT_FAT DNM!!!!)
