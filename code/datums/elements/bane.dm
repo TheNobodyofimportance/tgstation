@@ -15,8 +15,10 @@
 	var/requires_combat_mode
 	/// if we want it to only affect a certain mob biotype
 	var/mob_biotypes
+	/// if we want it to only affect mobs with certain traits.
+	var/mob_traits
 
-/datum/element/bane/Attach(datum/target, target_type = /mob/living, mob_biotypes = NONE, damage_multiplier=1, added_damage = 0, requires_combat_mode = TRUE)
+/datum/element/bane/Attach(datum/target, target_type = /mob/living, mob_biotypes = NONE, mob_traits = NONE, damage_multiplier=1, added_damage = 0, requires_combat_mode = TRUE)
 	. = ..()
 
 	if(!ispath(target_type, /mob/living) && !ispath(target_type, /datum/species))
@@ -27,6 +29,7 @@
 	src.added_damage = added_damage
 	src.requires_combat_mode = requires_combat_mode
 	src.mob_biotypes = mob_biotypes
+	src.mob_traits = mob_traits
 	target.AddElementTrait(TRAIT_ON_HIT_EFFECT, REF(src), /datum/element/on_hit_effect)
 	RegisterSignal(target, COMSIG_ON_HIT_EFFECT, PROC_REF(do_bane))
 
@@ -87,6 +90,8 @@
 	var/is_correct_biotype = living_target.mob_biotypes & mob_biotypes
 	if(mob_biotypes && !(is_correct_biotype))
 		return FALSE
+	if(HAS_TRAIT(target, mob_traits))
+		return istype(living_target, target_type)
 	if(ispath(target_type, /mob/living))
 		return istype(living_target, target_type)
 	else //species type
