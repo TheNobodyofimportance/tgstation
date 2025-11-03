@@ -119,6 +119,12 @@
 	icon_state = pick("meth_crystal1", "meth_crystal2", "meth_crystal3", "meth_crystal4", "meth_crystal5")
 	ADD_TRAIT(src, TRAIT_CONTRABAND, INNATE_TRAIT)
 
+/obj/item/food/drug/meth_crystal/contraband
+
+/obj/item/food/drug/meth_crystal/contraband/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent(/datum/reagent/drug/methamphetamine, 10)
+
 /obj/item/food/drug/opium
 	name = "opium"
 	desc = "A little of it, taken as much as a grain of ervum is a pain-easer, and a sleep-causer, and a digester... \

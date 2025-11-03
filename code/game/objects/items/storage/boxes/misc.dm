@@ -64,7 +64,7 @@
 
 /obj/item/storage/box/methdealer/PopulateContents()
 	var/static/list/items_inside = list(
-		/obj/item/food/drug/meth_crystal = 4,
+		/obj/item/food/drug/meth_crystal/contraband = 4,
 		/obj/item/cigarette/pipe/crackpipe = 2,
 	)
 	generate_items_inside(items_inside, src)
